@@ -70,7 +70,7 @@
             "万物贸易所_商品_数据协议10",
             "万物贸易所_商品_数据协议30",
             "万物贸易所_向右滚动",
-            "万物贸易所_结束"
+            "万物贸易所_检查准备"
         ]
     },
     "万物贸易所_余额至少10": {
@@ -446,6 +446,315 @@
         "post_delay": 800,
         "max_hit": 1,
         "next": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_检查准备": {
+        "action": "Swipe",
+        "begin": [300, 620, 40, 20],
+        "end": [1150, 620, 40, 20],
+        "duration": 700,
+        "post_delay": 800,
+        "next": ["万物贸易所_检查未完成路由"]
+    },
+    "万物贸易所_检查未完成路由": {
+        "next": [
+            "万物贸易所_检查未完成_传说星尘券",
+            "万物贸易所_检查未完成_构建蓝图",
+            "万物贸易所_检查未完成_赤狼星源",
+            "万物贸易所_检查未完成_破碎程式",
+            "万物贸易所_检查未完成_稀有礼物箱",
+            "万物贸易所_检查未完成_家具币",
+            "万物贸易所_检查未完成_装饰券",
+            "万物贸易所_检查未完成_总队长星源",
+            "万物贸易所_检查未完成_罕见星尘券",
+            "万物贸易所_检查未完成_高纯硅化剂",
+            "万物贸易所_检查未完成_进化之息",
+            "万物贸易所_检查未完成_数据协议10",
+            "万物贸易所_检查未完成_数据协议30",
+            "万物贸易所_检查向右滚动",
+            "万物贸易所_全部已完成"
+        ]
+    },
+    "万物贸易所_检查未完成_传说星尘券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*传说星尘券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_构建蓝图": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*构建蓝图.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_赤狼星源": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*赤狼星源.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_破碎程式": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*(?:破碎|卒)程式.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_稀有礼物箱": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*稀有礼物箱.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_家具币": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*家具币.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_装饰券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*装饰券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_总队长星源": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*总队长星源.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_罕见星尘券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*罕见星尘券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_高纯硅化剂": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*(?:高)?纯硅化剂.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_进化之息": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*进化之息.*",
+                "roi": [250, 135, 998, 480]
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_数据协议10": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*数据协[议训].*",
+                "roi": [250, 135, 998, 480],
+                "order_by": "Horizontal",
+                "index": 0
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查未完成_数据协议30": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "sub_name": "product",
+                "recognition": "OCR",
+                "expected": ".*数据协[议训].*",
+                "roi": [250, 135, 998, 480],
+                "order_by": "Horizontal",
+                "index": 1
+            },
+            {
+                "recognition": "OCR",
+                "expected": ".*剩余\\s*[1-9]\\d*.*",
+                "roi": "product",
+                "roi_offset": [-30, -55, 60, 55]
+            }
+        ],
+        "box_index": 0,
+        "next": ["万物贸易所_尚有未完成"]
+    },
+    "万物贸易所_检查向右滚动": {
+        "action": "Swipe",
+        "begin": [1120, 620, 40, 20],
+        "end": [300, 620, 40, 20],
+        "duration": 700,
+        "post_delay": 800,
+        "max_hit": 1,
+        "next": ["万物贸易所_检查未完成路由"]
+    },
+    "万物贸易所_尚有未完成": {
+        "action": "DoNothing"
+    },
+    "万物贸易所_全部已完成": {
+        "action": "Custom",
+        "custom_action": "TaskScheduleCompletionAction",
+        "custom_action_param": "{}",
+        "next": ["万物贸易所_结束"]
     },
     "万物贸易所_结束": {
         "action": "DoNothing"

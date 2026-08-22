@@ -53,9 +53,10 @@
             "name": "万物贸易所",
             "entry": "万物贸易所",
             "check": false,
-            "doc": "进入万物贸易所的异星灰域，并按多选清单自动购买；购买时选择最大数量，余额不足的商品自动跳过。",
+            "doc": "进入万物贸易所的异星灰域，并按多选清单自动购买；购买时选择最大数量，余额不足的商品自动跳过。选中商品全部售罄后，下次执行时间自动设为下周一。",
             "option": [
-                "贸易区域"
+                "贸易区域",
+                "MFA_NEXT_RUN_AT"
             ]
         },
         {
@@ -1155,6 +1156,22 @@
                 }
             ]
         },
+        "MFA_NEXT_RUN_AT": {
+            "type": "input",
+            "label": "下次执行时间",
+            "description": "到达该时间后才执行；选中商品全部售罄后自动设为下周一 00:00:00。清空或填写过去时间表示立即执行。",
+            "inputs": [
+                {
+                    "name": "value",
+                    "label": "下次执行时间",
+                    "description": "格式：yyyy-MM-dd HH:mm:ss，例如 2026-08-24 00:00:00；清空后立即执行。",
+                    "default": "",
+                    "pipeline_type": "string",
+                    "verify": "^(?:$|\\d{4}-\\d{2}-\\d{2}(?: \\d{2}:\\d{2}(?::\\d{2})?)?)$",
+                    "pattern_msg": "格式应为 yyyy-MM-dd HH:mm:ss，也可以清空"
+                }
+            ]
+        },
         "异星灰域购买清单": {
             "type": "checkbox",
             "label": "异星灰域购买清单",
@@ -1166,7 +1183,8 @@
                     "label": "传说星尘券 ×5（单价50，限购4）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_传说星尘券": { "enabled": true }
+                        "万物贸易所_商品_传说星尘券": { "enabled": true },
+                        "万物贸易所_检查未完成_传说星尘券": { "enabled": true }
                     }
                 },
                 {
@@ -1174,7 +1192,8 @@
                     "label": "构建蓝图（单价150，限购1）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_构建蓝图": { "enabled": true }
+                        "万物贸易所_商品_构建蓝图": { "enabled": true },
+                        "万物贸易所_检查未完成_构建蓝图": { "enabled": true }
                     }
                 },
                 {
@@ -1182,7 +1201,8 @@
                     "label": "赤狼星源（单价150，限购1）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_赤狼星源": { "enabled": true }
+                        "万物贸易所_商品_赤狼星源": { "enabled": true },
+                        "万物贸易所_检查未完成_赤狼星源": { "enabled": true }
                     }
                 },
                 {
@@ -1190,7 +1210,8 @@
                     "label": "破碎程式 ×50（单价50，限购10）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_破碎程式": { "enabled": true }
+                        "万物贸易所_商品_破碎程式": { "enabled": true },
+                        "万物贸易所_检查未完成_破碎程式": { "enabled": true }
                     }
                 },
                 {
@@ -1198,7 +1219,8 @@
                     "label": "稀有礼物箱（单价16，限购10）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_稀有礼物箱": { "enabled": true }
+                        "万物贸易所_商品_稀有礼物箱": { "enabled": true },
+                        "万物贸易所_检查未完成_稀有礼物箱": { "enabled": true }
                     }
                 },
                 {
@@ -1206,7 +1228,8 @@
                     "label": "家具币 ×10（单价10，限购10）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_家具币": { "enabled": true }
+                        "万物贸易所_商品_家具币": { "enabled": true },
+                        "万物贸易所_检查未完成_家具币": { "enabled": true }
                     }
                 },
                 {
@@ -1214,7 +1237,8 @@
                     "label": "装饰券 ×5（单价20，限购3）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_装饰券": { "enabled": true }
+                        "万物贸易所_商品_装饰券": { "enabled": true },
+                        "万物贸易所_检查未完成_装饰券": { "enabled": true }
                     }
                 },
                 {
@@ -1222,7 +1246,8 @@
                     "label": "总队长星源（单价300，限购1）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_总队长星源": { "enabled": true }
+                        "万物贸易所_商品_总队长星源": { "enabled": true },
+                        "万物贸易所_检查未完成_总队长星源": { "enabled": true }
                     }
                 },
                 {
@@ -1230,7 +1255,8 @@
                     "label": "罕见星尘券 ×20（单价10，限购4）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_罕见星尘券": { "enabled": true }
+                        "万物贸易所_商品_罕见星尘券": { "enabled": true },
+                        "万物贸易所_检查未完成_罕见星尘券": { "enabled": true }
                     }
                 },
                 {
@@ -1238,7 +1264,8 @@
                     "label": "高纯硅化剂（单价75，限购8）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_高纯硅化剂": { "enabled": true }
+                        "万物贸易所_商品_高纯硅化剂": { "enabled": true },
+                        "万物贸易所_检查未完成_高纯硅化剂": { "enabled": true }
                     }
                 },
                 {
@@ -1246,7 +1273,8 @@
                     "label": "进化之息（单价40，限购2）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_进化之息": { "enabled": true }
+                        "万物贸易所_商品_进化之息": { "enabled": true },
+                        "万物贸易所_检查未完成_进化之息": { "enabled": true }
                     }
                 },
                 {
@@ -1254,7 +1282,8 @@
                     "label": "数据协议（单价10，限购20）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_数据协议10": { "enabled": true }
+                        "万物贸易所_商品_数据协议10": { "enabled": true },
+                        "万物贸易所_检查未完成_数据协议10": { "enabled": true }
                     }
                 },
                 {
@@ -1262,7 +1291,8 @@
                     "label": "数据协议（单价30）",
                     "pipeline_override": {
                         "万物贸易所_开始购买": { "enabled": true },
-                        "万物贸易所_商品_数据协议30": { "enabled": true }
+                        "万物贸易所_商品_数据协议30": { "enabled": true },
+                        "万物贸易所_检查未完成_数据协议30": { "enabled": true }
                     }
                 }
             ]
