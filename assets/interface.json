@@ -59,6 +59,8 @@
             ],
             "pipeline_override": {
                 "首页_出击": {
+                    "post_delay": 3000,
+                    "timeout": 20000,
                     "next": "模拟军演_入口"
                 }
             }
