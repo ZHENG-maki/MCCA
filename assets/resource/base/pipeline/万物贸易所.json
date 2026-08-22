@@ -7,9 +7,7 @@
             "万物贸易所_打开补给站",
             "子任务_进入首页"
         ],
-        "on_error": [
-            "万物贸易所_结束"
-        ]
+        "on_error": ["万物贸易所_结束"]
     },
     "万物贸易所_打开补给站": {
         "recognition": "OCR",
@@ -18,13 +16,8 @@
         "action": "Click",
         "post_delay": 2000,
         "timeout": 15000,
-        "next": [
-            "万物贸易所_打开万物贸易所",
-            "万物贸易所_打开补给站"
-        ],
-        "on_error": [
-            "万物贸易所_结束"
-        ]
+        "next": ["万物贸易所_打开万物贸易所", "万物贸易所_打开补给站"],
+        "on_error": ["万物贸易所_结束"]
     },
     "万物贸易所_打开万物贸易所": {
         "recognition": "OCR",
@@ -33,17 +26,11 @@
         "action": "Click",
         "post_delay": 2000,
         "timeout": 15000,
-        "next": [
-            "万物贸易所_区域路由"
-        ],
-        "on_error": [
-            "万物贸易所_结束"
-        ]
+        "next": ["万物贸易所_区域路由"],
+        "on_error": ["万物贸易所_结束"]
     },
     "万物贸易所_区域路由": {
-        "next": [
-            "万物贸易所_异星灰域"
-        ]
+        "next": ["万物贸易所_异星灰域"]
     },
     "万物贸易所_异星灰域": {
         "recognition": "OCR",
@@ -52,12 +39,404 @@
         "action": "Click",
         "post_delay": 1500,
         "timeout": 15000,
+        "next": ["万物贸易所_回到最左"],
+        "on_error": ["万物贸易所_结束"]
+    },
+    "万物贸易所_回到最左": {
+        "action": "Swipe",
+        "begin": [300, 620, 40, 20],
+        "end": [1150, 620, 40, 20],
+        "duration": 700,
+        "post_delay": 800,
+        "next": ["万物贸易所_开始购买", "万物贸易所_结束"]
+    },
+    "万物贸易所_开始购买": {
+        "enabled": false,
+        "next": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_购买路由": {
         "next": [
-            "万物贸易所_结束"
-        ],
-        "on_error": [
+            "万物贸易所_商品_传说星尘券",
+            "万物贸易所_商品_构建蓝图",
+            "万物贸易所_商品_赤狼星源",
+            "万物贸易所_商品_破碎程式",
+            "万物贸易所_商品_稀有礼物箱",
+            "万物贸易所_商品_家具币",
+            "万物贸易所_商品_装饰券",
+            "万物贸易所_商品_总队长星源",
+            "万物贸易所_商品_罕见星尘券",
+            "万物贸易所_商品_高纯硅化剂",
+            "万物贸易所_商品_进化之息",
+            "万物贸易所_商品_数据协议10",
+            "万物贸易所_商品_数据协议30",
+            "万物贸易所_向右滚动",
             "万物贸易所_结束"
         ]
+    },
+    "万物贸易所_余额至少10": {
+        "recognition": "OCR",
+        "expected": "^(?:[1-9]\\d{1,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少16": {
+        "recognition": "OCR",
+        "expected": "^(?:1[6-9]|[2-9]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少20": {
+        "recognition": "OCR",
+        "expected": "^(?:[2-9]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少30": {
+        "recognition": "OCR",
+        "expected": "^(?:[3-9]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少40": {
+        "recognition": "OCR",
+        "expected": "^(?:[4-9]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少50": {
+        "recognition": "OCR",
+        "expected": "^(?:[5-9]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少75": {
+        "recognition": "OCR",
+        "expected": "^(?:7[5-9]|[89]\\d|[1-9]\\d{2,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少150": {
+        "recognition": "OCR",
+        "expected": "^(?:1[5-9]\\d|[2-9]\\d{2}|[1-9]\\d{3,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_余额至少300": {
+        "recognition": "OCR",
+        "expected": "^(?:[3-9]\\d{2}|[1-9]\\d{3,})$",
+        "roi": [1170, 20, 95, 50],
+        "replace": [[" ", ""], [",", ""]]
+    },
+    "万物贸易所_商品_传说星尘券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*传说星尘券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少50"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_构建蓝图": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*构建蓝图.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少150"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_赤狼星源": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*赤狼星源.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少150"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_破碎程式": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*破碎程式.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少50"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_稀有礼物箱": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*稀有礼物箱.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少16"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_家具币": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*家具币.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少10"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_装饰券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*装饰券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少20"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_总队长星源": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*总队长星源.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少300"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_罕见星尘券": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*罕见星尘券.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少10"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_高纯硅化剂": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*高纯硅化剂.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少75"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_进化之息": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*进化之息.*",
+                "roi": [250, 135, 998, 480]
+            },
+            "万物贸易所_余额至少40"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_数据协议10": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*数据协议.*",
+                "roi": [250, 135, 998, 480],
+                "order_by": "Horizontal",
+                "index": 0
+            },
+            "万物贸易所_余额至少10"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_商品_数据协议30": {
+        "enabled": false,
+        "recognition": "And",
+        "all_of": [
+            {
+                "recognition": "OCR",
+                "expected": ".*数据协议.*",
+                "roi": [250, 135, 998, 480],
+                "order_by": "Horizontal",
+                "index": 1
+            },
+            "万物贸易所_余额至少30"
+        ],
+        "box_index": 0,
+        "action": "Click",
+        "post_delay": 1000,
+        "timeout": 7000,
+        "max_hit": 1,
+        "next": ["万物贸易所_点击最大"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_点击最大": {
+        "recognition": "OCR",
+        "expected": "^最大$",
+        "roi": [950, 395, 100, 70],
+        "action": "Click",
+        "post_delay": 500,
+        "timeout": 5000,
+        "next": ["万物贸易所_点击购买"],
+        "on_error": ["万物贸易所_关闭购买弹窗", "万物贸易所_购买路由"]
+    },
+    "万物贸易所_点击购买": {
+        "recognition": "OCR",
+        "expected": "^购买$",
+        "roi": [775, 500, 215, 75],
+        "action": "Click",
+        "post_delay": 1500,
+        "timeout": 5000,
+        "next": [
+            "万物贸易所_获得物品",
+            "万物贸易所_关闭购买弹窗",
+            "万物贸易所_返回商店"
+        ],
+        "on_error": ["万物贸易所_关闭购买弹窗", "万物贸易所_购买路由"]
+    },
+    "万物贸易所_获得物品": {
+        "recognition": "OCR",
+        "expected": ".*获得物品.*",
+        "roi": [350, 120, 580, 480],
+        "action": "Click",
+        "target": [640, 650, 10, 10],
+        "post_delay": 1000,
+        "timeout": 5000,
+        "next": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_关闭购买弹窗": {
+        "recognition": "OCR",
+        "expected": ".*售价.*",
+        "roi": [710, 180, 330, 120],
+        "action": "Click",
+        "target": [1010, 125, 50, 50],
+        "post_delay": 700,
+        "timeout": 3000,
+        "next": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_返回商店": {
+        "recognition": "OCR",
+        "expected": ".*异星灰域.*",
+        "roi": [800, 75, 270, 70],
+        "next": ["万物贸易所_购买路由"],
+        "on_error": ["万物贸易所_购买路由"]
+    },
+    "万物贸易所_向右滚动": {
+        "action": "Swipe",
+        "begin": [1120, 620, 40, 20],
+        "end": [300, 620, 40, 20],
+        "duration": 700,
+        "post_delay": 800,
+        "max_hit": 1,
+        "next": ["万物贸易所_购买路由"]
     },
     "万物贸易所_结束": {
         "action": "DoNothing"
