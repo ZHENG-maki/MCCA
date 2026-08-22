@@ -751,9 +751,7 @@
         "action": "DoNothing"
     },
     "万物贸易所_全部已完成": {
-        "action": "Custom",
-        "custom_action": "TaskScheduleCompletionAction",
-        "custom_action_param": "{}",
+        "action": "DoNothing",
         "next": ["万物贸易所_结束"]
     },
     "万物贸易所_结束": {
