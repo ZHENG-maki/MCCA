@@ -1,0 +1,330 @@
+From 57ab71f8d47309706fed01641512dd0f2f290344 Mon Sep 17 00:00:00 2001
+From: ZHENG-maki <49464381+ZHENG-maki@users.noreply.github.com>
+Date: Sat, 22 Aug 2026 12:51:30 +0800
+Subject: [PATCH 1/2] feat: add per-task next run scheduling
+
+---
+ .../Custom/TaskScheduleCompletionAction.cs    | 31 +++++++++
+ MFAAvalonia/Extensions/MaaFW/MaaProcessor.cs  | 37 ++++++++--
+ MFAAvalonia/Helper/TaskScheduleHelper.cs      | 67 +++++++++++++++++++
+ .../Helper/ValueType/DragItemViewModel.cs     |  1 +
+ .../ViewModels/Pages/TaskQueueViewModel.cs    | 37 +++++++++-
+ 5 files changed, 168 insertions(+), 5 deletions(-)
+ create mode 100644 MFAAvalonia/Extensions/MaaFW/Custom/TaskScheduleCompletionAction.cs
+ create mode 100644 MFAAvalonia/Helper/TaskScheduleHelper.cs
+
+diff --git a/MFAAvalonia/Extensions/MaaFW/Custom/TaskScheduleCompletionAction.cs b/MFAAvalonia/Extensions/MaaFW/Custom/TaskScheduleCompletionAction.cs
+new file mode 100644
+index 0000000..149ef92
+--- /dev/null
++++ b/MFAAvalonia/Extensions/MaaFW/Custom/TaskScheduleCompletionAction.cs
+@@ -0,0 +1,31 @@
++using MaaFramework.Binding;
++using MaaFramework.Binding.Custom;
++using MFAAvalonia.Helper;
++using System;
++
++namespace MFAAvalonia.Extensions.MaaFW.Custom;
++
++public sealed class TaskScheduleCompletionAction(Action onCompleted) : IMaaCustomAction
++{
++    public string Name { get; set; } = nameof(TaskScheduleCompletionAction);
++
++    public bool Run<T>(T context, in RunArgs args, in RunResults results) where T : IMaaContext
++    {
++        try
++        {
++            ActionParamHelper.ThrowIfStopping(context);
++            onCompleted();
++            LoggerHelper.Info("[TaskScheduleCompletionAction] 已确认任务目标全部完成。");
++            return true;
++        }
++        catch (MaaStopException)
++        {
++            return false;
++        }
++        catch (Exception exception)
++        {
++            LoggerHelper.Error($"[TaskScheduleCompletionAction] Error: {exception.Message}");
++            return false;
++        }
++    }
++}
+diff --git a/MFAAvalonia/Extensions/MaaFW/MaaProcessor.cs b/MFAAvalonia/Extensions/MaaFW/MaaProcessor.cs
+index 0302e18..914f19e 100644
+--- a/MFAAvalonia/Extensions/MaaFW/MaaProcessor.cs
++++ b/MFAAvalonia/Extensions/MaaFW/MaaProcessor.cs
+@@ -3354,7 +3354,20 @@ public class MaaProcessor
+                     task.IsControllerSupported = task.SupportsController(currentControllerName);
+                     task.IsTaskSupported = isSupported;
+ 
+-                    return (ignoreCheckedState || task.IsChecked || task.IsCheckedWithNull == null) && isSupported;
++                    var isSelected = ignoreCheckedState || task.IsChecked || task.IsCheckedWithNull == null;
++                    if (!isSelected || !isSupported)
++                    {
++                        return false;
++                    }
++
++                    if (!TaskScheduleHelper.IsDue(task.InterfaceItem, DateTime.Now, out var nextRunAt))
++                    {
++                        LoggerHelper.Info(
++                            $"跳过未到执行时间的任务：任务={task.Name}，下次执行时间={nextRunAt:yyyy-MM-dd HH:mm:ss}");
++                        return false;
++                    }
++
++                    return true;
+                 })
+                 .ToList()
+             ?? new List<DragItemViewModel>();
+@@ -3367,6 +3380,7 @@ public class MaaProcessor
+     } = new();
+     private DateTime? _startTime;
+     private List<DragItemViewModel> _tempTasks = [];
++    private DragItemViewModel? _activeCoreTaskItem;
+ 
+     public async Task StartTask(List<DragItemViewModel>? tasks, bool onlyStart = false, bool checkUpdate = false)
+     {
+@@ -4142,9 +4156,17 @@ public class MaaProcessor
+                 async () =>
+                 {
+                     token.ThrowIfCancellationRequested();
+-                    // if (task.Tasks != null)
+-                    //     NodeDictionary = task.Tasks;
+-                    return await TryRunTasksAsync(MaaTasker, task.Entry, task.Param, token);
++                    _activeCoreTaskItem = task.SourceItem;
++                    try
++                    {
++                        // if (task.Tasks != null)
++                        //     NodeDictionary = task.Tasks;
++                        return await TryRunTasksAsync(MaaTasker, task.Entry, task.Param, token);
++                    }
++                    finally
++                    {
++                        _activeCoreTaskItem = null;
++                    }
+                 }, task.Count ?? 1, task.SourceItem, task.RunId
+             ));
+         }
+@@ -4840,6 +4862,13 @@ public class MaaProcessor
+             tasker.Resource.Register(new Custom.KillProcessAction());
+             tasker.Resource.Register(new Custom.ComputerOperationAction());
+             tasker.Resource.Register(new Custom.WebhookAction());
++            tasker.Resource.Register(new Custom.TaskScheduleCompletionAction(() =>
++            {
++                if (_activeCoreTaskItem != null)
++                {
++                    _activeCoreTaskItem.ScheduleCompletionSignaled = true;
++                }
++            }));
+             tasker.Resource.Register(new Custom.HeiLiuAction((content, color) => AddLog(content, color)));
+             LoggerHelper.Info("已注册内置特殊任务动作。");
+ 
+diff --git a/MFAAvalonia/Helper/TaskScheduleHelper.cs b/MFAAvalonia/Helper/TaskScheduleHelper.cs
+new file mode 100644
+index 0000000..07f83bc
+--- /dev/null
++++ b/MFAAvalonia/Helper/TaskScheduleHelper.cs
+@@ -0,0 +1,67 @@
++using MFAAvalonia.Extensions.MaaFW;
++using System;
++using System.Globalization;
++using System.Linq;
++
++namespace MFAAvalonia.Helper;
++
++internal static class TaskScheduleHelper
++{
++    public const string OptionName = "MFA_NEXT_RUN_AT";
++    public const string InputName = "value";
++    public const string DisplayFormat = "yyyy-MM-dd HH:mm:ss";
++
++    private static readonly string[] AcceptedFormats =
++    [
++        DisplayFormat,
++        "yyyy-MM-dd HH:mm",
++        "yyyy-MM-dd"
++    ];
++
++    public static bool TryGetNextRunAt(MaaInterface.MaaInterfaceTask? task, out DateTime nextRunAt)
++    {
++        nextRunAt = default;
++        var option = task?.Option?.FirstOrDefault(item =>
++            string.Equals(item.Name, OptionName, StringComparison.Ordinal));
++        if (option?.Data == null
++            || !option.Data.TryGetValue(InputName, out var value)
++            || string.IsNullOrWhiteSpace(value))
++        {
++            return false;
++        }
++
++        return DateTime.TryParseExact(
++            value.Trim(),
++            AcceptedFormats,
++            CultureInfo.InvariantCulture,
++            DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeLocal,
++            out nextRunAt);
++    }
++
++    public static bool IsDue(MaaInterface.MaaInterfaceTask? task, DateTime now, out DateTime nextRunAt)
++    {
++        return !TryGetNextRunAt(task, out nextRunAt) || nextRunAt <= now;
++    }
++
++    public static bool SetNextMonday(MaaInterface.MaaInterfaceTask? task, DateTime now, out DateTime nextRunAt)
++    {
++        nextRunAt = default;
++        var option = task?.Option?.FirstOrDefault(item =>
++            string.Equals(item.Name, OptionName, StringComparison.Ordinal));
++        if (option == null)
++        {
++            return false;
++        }
++
++        var daysUntilMonday = ((int)DayOfWeek.Monday - (int)now.DayOfWeek + 7) % 7;
++        if (daysUntilMonday == 0)
++        {
++            daysUntilMonday = 7;
++        }
++
++        nextRunAt = now.Date.AddDays(daysUntilMonday);
++        option.Data ??= [];
++        option.Data[InputName] = nextRunAt.ToString(DisplayFormat, CultureInfo.InvariantCulture);
++        return true;
++    }
++}
+diff --git a/MFAAvalonia/Helper/ValueType/DragItemViewModel.cs b/MFAAvalonia/Helper/ValueType/DragItemViewModel.cs
+index 42e8806..655ae83 100644
+--- a/MFAAvalonia/Helper/ValueType/DragItemViewModel.cs
++++ b/MFAAvalonia/Helper/ValueType/DragItemViewModel.cs
+@@ -88,6 +88,7 @@ public partial class DragItemViewModel : ObservableObject
+ 
+     [JsonIgnore] public DateTimeOffset? RunStartedAt { get; set; }
+     [JsonIgnore] public long RunId { get; set; }
++    [JsonIgnore] public bool ScheduleCompletionSignaled { get; set; }
+ 
+     [JsonIgnore] public bool IsRunStatusVisible => RunState != TaskRunState.None;
+     [JsonIgnore] public bool IsRunQueued => RunState == TaskRunState.Queued;
+diff --git a/MFAAvalonia/ViewModels/Pages/TaskQueueViewModel.cs b/MFAAvalonia/ViewModels/Pages/TaskQueueViewModel.cs
+index 0354d64..b2b6893 100644
+--- a/MFAAvalonia/ViewModels/Pages/TaskQueueViewModel.cs
++++ b/MFAAvalonia/ViewModels/Pages/TaskQueueViewModel.cs
+@@ -158,6 +158,7 @@ public partial class TaskQueueViewModel : ViewModelBase, IDisposable
+             foreach (var item in TaskItemViewModels)
+             {
+                 item.RunId = runId;
++                item.ScheduleCompletionSignaled = false;
+                 item.RunState = TaskRunState.None;
+                 item.RunElapsed = TimeSpan.Zero;
+                 item.RunStartedAt = null;
+@@ -199,7 +200,41 @@ public partial class TaskQueueViewModel : ViewModelBase, IDisposable
+ 
+     public void MarkTaskSucceeded(DragItemViewModel? item, long runId)
+     {
+-        CompleteTaskRun(item, runId, TaskRunState.Succeeded, null);
++        UpdateTaskRunState(item, runId, task =>
++        {
++            CompleteTaskRunCore(task, TaskRunState.Succeeded, null);
++            ScheduleNextRunIfCompleted(task);
++            StopTaskRunElapsedTimerIfIdle();
++        });
++    }
++
++    private void ScheduleNextRunIfCompleted(DragItemViewModel task)
++    {
++        if (!task.ScheduleCompletionSignaled)
++        {
++            return;
++        }
++
++        task.ScheduleCompletionSignaled = false;
++        if (!TaskScheduleHelper.SetNextMonday(task.InterfaceItem, DateTime.Now, out var nextRunAt))
++        {
++            return;
++        }
++
++        Processor.InstanceConfiguration.SetValue(
++            ConfigurationKeys.TaskItems,
++            TaskItemViewModels
++                .Where(model => !model.IsResourceOptionItem)
++                .Select(model => model.InterfaceItem)
++                .ToList());
++        LoggerHelper.Info($"任务已全部完成，下次执行时间已设置为：{nextRunAt:yyyy-MM-dd HH:mm:ss}，任务={task.Name}");
++
++        // 任务选项是命令式生成的；若设置面板正打开，重建一次以立即显示新时间。
++        if (task.EnableSetting)
++        {
++            task.EnableSetting = false;
++            task.EnableSetting = true;
++        }
+     }
+ 
+     public void MarkTaskFailed(DragItemViewModel? item, long runId, string? errorMessage = null)
+
+From f58c225c8c50ff0cae162accc0fd191872dcb2db Mon Sep 17 00:00:00 2001
+From: ZHENG-maki <49464381+ZHENG-maki@users.noreply.github.com>
+Date: Sat, 22 Aug 2026 18:11:29 +0800
+Subject: [PATCH 2/2] feat: support collapsible checkbox options
+
+---
+ MFAAvalonia/Extensions/MaaFW/MaaInterface.cs |  8 ++++++++
+ MFAAvalonia/Helper/TaskOptionGenerator.cs    | 21 ++++++++++++++++++--
+ 2 files changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/MFAAvalonia/Extensions/MaaFW/MaaInterface.cs b/MFAAvalonia/Extensions/MaaFW/MaaInterface.cs
+index 3c9069f..602dd45 100644
+--- a/MFAAvalonia/Extensions/MaaFW/MaaInterface.cs
++++ b/MFAAvalonia/Extensions/MaaFW/MaaInterface.cs
+@@ -172,6 +172,14 @@ public partial class MaaInterface
+         [JsonProperty("type")]
+         public string? Type { get; set; }
+ 
++        /// <summary>是否允许折叠该选项的内容。</summary>
++        [JsonProperty("collapsible")]
++        public bool Collapsible { get; set; }
++
++        /// <summary>可折叠选项的初始展开状态，默认展开。</summary>
++        [JsonProperty("expanded")]
++        public bool? Expanded { get; set; }
++
+         /// <summary>
+         /// 可选。指定该配置项适用的控制器类型列表。
+         /// 数组元素应与 controller 配置中的 name 字段对应。
+diff --git a/MFAAvalonia/Helper/TaskOptionGenerator.cs b/MFAAvalonia/Helper/TaskOptionGenerator.cs
+index ed3a642..bfae0b1 100644
+--- a/MFAAvalonia/Helper/TaskOptionGenerator.cs
++++ b/MFAAvalonia/Helper/TaskOptionGenerator.cs
+@@ -232,7 +232,10 @@ public class TaskOptionGenerator(TaskQueueViewModel viewModel, Action saveConfig
+         // Header（显示 option 名称和图标）
+         var header = CreateOptionHeader(interfaceOption);
+         header.Margin = new Thickness(0); // 外层 container 已提供垂直间距，去掉 header 内部多余的上下 margin
+-        container.Children.Add(header);
++        if (!interfaceOption.Collapsible)
++        {
++            container.Children.Add(header);
++        }
+ 
+         // 初始化 SelectedCases（任务 9）
+         option.SelectedCases ??= new List<string>(interfaceOption.DefaultCases ?? new List<string>());
+@@ -404,7 +407,21 @@ public class TaskOptionGenerator(TaskQueueViewModel viewModel, Action saveConfig
+ 
+         // Enhanced Sub-option visualization
+         container.Children.Add(CreateNestedOptionsBorder(subOptionsContainer));
+-        return container;
++
++        if (!interfaceOption.Collapsible)
++        {
++            return container;
++        }
++
++        container.Margin = new Thickness(0, 4, 0, 0);
++        return new Expander
++        {
++            Header = header,
++            Content = container,
++            IsExpanded = interfaceOption.Expanded ?? true,
++            Margin = new Thickness(10, 6, 10, 6),
++            HorizontalAlignment = HorizontalAlignment.Stretch
++        };
+     }
+ 
+     private Control CreateInputControl(MaaInterface.MaaInterfaceSelectOption option, MaaInterface.MaaInterfaceOption interfaceOption)

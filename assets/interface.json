@@ -55,8 +55,8 @@
             "check": false,
             "doc": "进入万物贸易所的异星灰域，并按多选清单自动购买；购买时选择最大数量，余额不足的商品自动跳过。选中商品全部售罄后，下次执行时间自动设为下周一。",
             "option": [
-                "贸易区域",
-                "MFA_NEXT_RUN_AT"
+                "MFA_NEXT_RUN_AT",
+                "贸易区域"
             ]
         },
         {
@@ -1159,7 +1159,6 @@
         "MFA_NEXT_RUN_AT": {
             "type": "input",
             "label": "下次执行时间",
-            "description": "到达该时间后才执行；选中商品全部售罄后自动设为下周一 00:00:00。清空或填写过去时间表示立即执行。",
             "inputs": [
                 {
                     "name": "value",
@@ -1174,6 +1173,8 @@
         },
         "异星灰域购买清单": {
             "type": "checkbox",
+            "collapsible": true,
+            "expanded": false,
             "label": "异星灰域购买清单",
             "description": "可多选；每项最多处理一次。购买时点击最大，余额不足单价时直接跳过。",
             "default_case": [],
