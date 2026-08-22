@@ -11,8 +11,9 @@
         "expected": [
             "补给站"
         ],
-        "roi": [1008, 593, 111, 118],
+        "roi": [1024, 650, 128, 60],
         "action": "Click",
+        "post_delay": 1500,
         "next": [
             "DailyGift",
             "Shop"
@@ -23,12 +24,7 @@
         "expected": [
             "礼包"
         ],
-        "roi": [
-            362,
-            57,
-            166,
-            89
-        ],
+        "roi": [32, 320, 180, 90],
         "action": "Click",
         "post_delay": 2000,
         "next": [
@@ -40,8 +36,9 @@
     "DailyGiftYes": {
         "recognition": "OCR",
         "expected": "免费",
-        "roi": [273, 522, 985, 79],
-        "action":"Click",
+        "roi": [252, 575, 190, 60],
+        "action": "Click",
+        "post_delay": 1000,
         "next": [
             "ForFree",
             "进入首页"
@@ -52,7 +49,7 @@
         "expected": [
             "免费"
         ],
-        "roi": [163, 9, 409, 239],
+        "roi": [710, 190, 330, 80],
         "next": [
             "Purchase",
             "ForFree"
@@ -63,12 +60,7 @@
         "expected": [
             "购买"
         ],
-        "roi": [
-            758,
-            513,
-            191,
-            75
-        ],
+        "roi": [775, 500, 215, 75],
         "action": "Click",
         "post_delay": 1000,
         "next": [
