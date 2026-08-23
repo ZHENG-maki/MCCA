@@ -422,12 +422,13 @@
         "pre_delay": 1500,
         "action": "Click",
         "target": [
-            505,
-            220,
-            30,
-            30
+            518,
+            260,
+            4,
+            4
         ],
         "post_delay": 3000,
+        "timeout": 40000,
         "next": [
             "ActivityExploration_Combating2_Left"
         ]
@@ -446,12 +447,13 @@
         "pre_delay": 1500,
         "action": "Click",
         "target": [
-            745,
-            220,
-            30,
-            30
+            758,
+            260,
+            4,
+            4
         ],
         "post_delay": 3000,
+        "timeout": 40000,
         "next": [
             "ActivityExploration_Combating2_Right"
         ]
