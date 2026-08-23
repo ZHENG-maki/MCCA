@@ -6,17 +6,13 @@
         ]
     },
     "ActivityExploration": {
-        "recognition": "OCR",
-        "expected": [
-            "活动探索"
-        ],
-        "roi": [
+        "action": "Click",
+        "target": [
             540,
             98,
             215,
             95
         ],
-        "action": "Click",
         "post_delay": 2000,
         "next": [
             "ActivityExploration_1",
