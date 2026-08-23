@@ -390,6 +390,27 @@
             "ActivityExploration_第六关Attack_1_Right"
         ]
     },
+    "ActivityExploration_周本获得物品": {
+        "is_sub": true,
+        "recognition": "OCR",
+        "expected": [
+            "获得物品"
+        ],
+        "roi": [
+            400,
+            130,
+            480,
+            140
+        ],
+        "action": "Click",
+        "target": [
+            1080,
+            620,
+            80,
+            60
+        ],
+        "post_delay": 1500
+    },
     "ActivityExploration_第六关Step_2": {
         "recognition": "OCR",
         "expected": [
@@ -430,7 +451,9 @@
         "post_delay": 3000,
         "timeout": 40000,
         "next": [
-            "ActivityExploration_Combating2_Left"
+            "[JumpBack]ActivityExploration_周本获得物品",
+            "ActivityExploration_Combating2_Left",
+            "ActivityExploration_第六关Step_2_Left"
         ]
     },
     "ActivityExploration_第六关Step_2_Right": {
@@ -455,7 +478,9 @@
         "post_delay": 3000,
         "timeout": 40000,
         "next": [
-            "ActivityExploration_Combating2_Right"
+            "[JumpBack]ActivityExploration_周本获得物品",
+            "ActivityExploration_Combating2_Right",
+            "ActivityExploration_第六关Step_2_Right"
         ]
     },
     "ActivityExploration_Combating1_Left": {
@@ -486,8 +511,9 @@
             152
         ],
         "action": "Click",
+        "post_delay": 3000,
         "next": [
-            "[JumpBack]子任务_获得物品",
+            "[JumpBack]ActivityExploration_周本获得物品",
             "ActivityExploration_第六关Step_2_Left",
             "ActivityExploration_CombatEnd1_Left"
         ]
@@ -520,8 +546,9 @@
             152
         ],
         "action": "Click",
+        "post_delay": 3000,
         "next": [
-            "[JumpBack]子任务_获得物品",
+            "[JumpBack]ActivityExploration_周本获得物品",
             "ActivityExploration_第六关Step_2_Right",
             "ActivityExploration_CombatEnd1_Right"
         ]
@@ -554,8 +581,9 @@
             152
         ],
         "action": "Click",
+        "post_delay": 3000,
         "next": [
-            "[JumpBack]子任务_获得物品",
+            "[JumpBack]ActivityExploration_周本获得物品",
             "ActivityExploration_第六关Step_3_Left",
             "ActivityExploration_CombatEnd2_Left"
         ]
@@ -588,8 +616,9 @@
             152
         ],
         "action": "Click",
+        "post_delay": 3000,
         "next": [
-            "[JumpBack]子任务_获得物品",
+            "[JumpBack]ActivityExploration_周本获得物品",
             "ActivityExploration_第六关Step_3_Right",
             "ActivityExploration_CombatEnd2_Right"
         ]
