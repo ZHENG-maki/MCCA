@@ -56,7 +56,7 @@
         "action": "Click",
         "post_delay": 2000,
         "next": [
-            "ActivityExploration_第五关",
+            "ActivityExploration_第六关",
             "ActivityExploration_SwipeDown",
             "ActivityExploration_2"
         ]
@@ -78,16 +78,16 @@
             "ActivityExploration_Start"
         ]
     },
-    "ActivityExploration_第五关": {
+    "ActivityExploration_第六关": {
         "recognition": "OCR",
         "expected": [
-            "虚影宙斯"
+            "虚影稽查者"
         ],
         "roi": [
-            682,
-            456,
-            180,
-            180
+            600,
+            500,
+            300,
+            170
         ],
         "action": "Click",
         "next": [
@@ -602,7 +602,7 @@
         "action": "Click",
         "next": [
             "子任务_获得物品",
-            "ActivityExploration_第五关",
+            "ActivityExploration_第六关",
             "ActivityExploration_CombatEnd3"
         ]
     },
@@ -636,6 +636,11 @@
             196,
             40,
             40
+        ],
+        "post_delay": 1000,
+        "next": [
+            "ActivityExploration_第六关",
+            "ActivityExploration_2"
         ]
     }
 }
