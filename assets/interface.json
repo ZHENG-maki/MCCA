@@ -1113,6 +1113,38 @@
                                 "ActivityExploration_2"
                             ]
                         },
+                        "ActivityExploration_CombatEnd1": {
+                            "next": [
+                                "子任务_获得物品",
+                                "ActivityExploration_第六关Step_2",
+                                "ActivityExploration_CombatEnd1"
+                            ]
+                        },
+                        "ActivityExploration_Combating1": {
+                            "next": [
+                                "[JumpBack]战斗_自动战斗",
+                                "[JumpBack]战斗_启用二倍速",
+                                "ActivityExploration_CombatEnd1",
+                                "ActivityExploration_第六关Step_2",
+                                "ActivityExploration_Combating1"
+                            ]
+                        },
+                        "ActivityExploration_CombatEnd2": {
+                            "next": [
+                                "子任务_获得物品",
+                                "ActivityExploration_第六关Step_3",
+                                "ActivityExploration_CombatEnd2"
+                            ]
+                        },
+                        "ActivityExploration_Combating2": {
+                            "next": [
+                                "[JumpBack]战斗_自动战斗",
+                                "[JumpBack]战斗_启用二倍速",
+                                "ActivityExploration_CombatEnd2",
+                                "ActivityExploration_第六关Step_3",
+                                "ActivityExploration_Combating2"
+                            ]
+                        },
                         "ActivityExploration_CombatEnd3": {
                             "next": [
                                 "子任务_获得物品",
