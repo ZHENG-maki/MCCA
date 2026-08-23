@@ -310,7 +310,7 @@
         ],
         "post_delay": 3000,
         "next": [
-            "ActivityExploration_Combating1",
+            "ActivityExploration_Combating1_Left",
             "ActivityExploration_第六关Attack_1_Left"
         ]
     },
@@ -336,7 +336,7 @@
         ],
         "post_delay": 3000,
         "next": [
-            "ActivityExploration_Combating1",
+            "ActivityExploration_Combating1_Right",
             "ActivityExploration_第六关Attack_1_Right"
         ]
     },
@@ -361,7 +361,7 @@
         "post_delay": 3000,
         "timeout": 40000,
         "next": [
-            "ActivityExploration_Combating1",
+            "ActivityExploration_Combating1_Left",
             "ActivityExploration_第六关Attack_1_Left"
         ]
     },
@@ -386,7 +386,7 @@
         "post_delay": 3000,
         "timeout": 40000,
         "next": [
-            "ActivityExploration_Combating1",
+            "ActivityExploration_Combating1_Right",
             "ActivityExploration_第六关Attack_1_Right"
         ]
     },
@@ -411,14 +411,13 @@
     "ActivityExploration_第六关Step_2_Left": {
         "recognition": "OCR",
         "expected": [
-            "01"
+            "行动"
         ],
-        "replace": [["O", "0"], ["I", "1"], ["l", "1"]],
         "roi": [
-            250,
-            80,
-            390,
-            520
+            1052,
+            11,
+            130,
+            64
         ],
         "pre_delay": 1500,
         "action": "Click",
@@ -430,20 +429,19 @@
         ],
         "post_delay": 3000,
         "next": [
-            "ActivityExploration_Combating2"
+            "ActivityExploration_Combating2_Left"
         ]
     },
     "ActivityExploration_第六关Step_2_Right": {
         "recognition": "OCR",
         "expected": [
-            "01"
+            "行动"
         ],
-        "replace": [["O", "0"], ["I", "1"], ["l", "1"]],
         "roi": [
-            640,
-            80,
-            390,
-            520
+            1052,
+            11,
+            130,
+            64
         ],
         "pre_delay": 1500,
         "action": "Click",
@@ -455,7 +453,143 @@
         ],
         "post_delay": 3000,
         "next": [
-            "ActivityExploration_Combating2"
+            "ActivityExploration_Combating2_Right"
+        ]
+    },
+    "ActivityExploration_Combating1_Left": {
+        "recognition": "TemplateMatch",
+        "template": "Combat/Combat_Combating.png",
+        "roi": [
+            1169,
+            27,
+            105,
+            59
+        ],
+        "next": [
+            "[JumpBack]战斗_自动战斗",
+            "[JumpBack]战斗_启用二倍速",
+            "ActivityExploration_CombatEnd1_Left",
+            "ActivityExploration_Combating1_Left"
+        ]
+    },
+    "ActivityExploration_CombatEnd1_Left": {
+        "recognition": "OCR",
+        "expected": [
+            "等级"
+        ],
+        "roi": [
+            210,
+            410,
+            97,
+            152
+        ],
+        "action": "Click",
+        "next": [
+            "[JumpBack]子任务_获得物品",
+            "ActivityExploration_第六关Step_2_Left",
+            "ActivityExploration_CombatEnd1_Left"
+        ]
+    },
+    "ActivityExploration_Combating1_Right": {
+        "recognition": "TemplateMatch",
+        "template": "Combat/Combat_Combating.png",
+        "roi": [
+            1169,
+            27,
+            105,
+            59
+        ],
+        "next": [
+            "[JumpBack]战斗_自动战斗",
+            "[JumpBack]战斗_启用二倍速",
+            "ActivityExploration_CombatEnd1_Right",
+            "ActivityExploration_Combating1_Right"
+        ]
+    },
+    "ActivityExploration_CombatEnd1_Right": {
+        "recognition": "OCR",
+        "expected": [
+            "等级"
+        ],
+        "roi": [
+            210,
+            410,
+            97,
+            152
+        ],
+        "action": "Click",
+        "next": [
+            "[JumpBack]子任务_获得物品",
+            "ActivityExploration_第六关Step_2_Right",
+            "ActivityExploration_CombatEnd1_Right"
+        ]
+    },
+    "ActivityExploration_Combating2_Left": {
+        "recognition": "TemplateMatch",
+        "template": "Combat/Combat_Combating.png",
+        "roi": [
+            1169,
+            27,
+            105,
+            59
+        ],
+        "next": [
+            "[JumpBack]战斗_自动战斗",
+            "[JumpBack]战斗_启用二倍速",
+            "ActivityExploration_CombatEnd2_Left",
+            "ActivityExploration_Combating2_Left"
+        ]
+    },
+    "ActivityExploration_CombatEnd2_Left": {
+        "recognition": "OCR",
+        "expected": [
+            "等级"
+        ],
+        "roi": [
+            210,
+            410,
+            97,
+            152
+        ],
+        "action": "Click",
+        "next": [
+            "[JumpBack]子任务_获得物品",
+            "ActivityExploration_第六关Step_3_Left",
+            "ActivityExploration_CombatEnd2_Left"
+        ]
+    },
+    "ActivityExploration_Combating2_Right": {
+        "recognition": "TemplateMatch",
+        "template": "Combat/Combat_Combating.png",
+        "roi": [
+            1169,
+            27,
+            105,
+            59
+        ],
+        "next": [
+            "[JumpBack]战斗_自动战斗",
+            "[JumpBack]战斗_启用二倍速",
+            "ActivityExploration_CombatEnd2_Right",
+            "ActivityExploration_Combating2_Right"
+        ]
+    },
+    "ActivityExploration_CombatEnd2_Right": {
+        "recognition": "OCR",
+        "expected": [
+            "等级"
+        ],
+        "roi": [
+            210,
+            410,
+            97,
+            152
+        ],
+        "action": "Click",
+        "next": [
+            "[JumpBack]子任务_获得物品",
+            "ActivityExploration_第六关Step_3_Right",
+            "ActivityExploration_CombatEnd2_Right"
         ]
     },
     "ActivityExploration_第六关Step_3": {
@@ -478,14 +612,13 @@
     "ActivityExploration_第六关Step_3_Left": {
         "recognition": "OCR",
         "expected": [
-            "01"
+            "行动"
         ],
-        "replace": [["O", "0"], ["I", "1"], ["l", "1"]],
         "roi": [
-            250,
-            80,
-            390,
-            520
+            1052,
+            11,
+            130,
+            64
         ],
         "pre_delay": 1500,
         "action": "Click",
@@ -503,14 +636,13 @@
     "ActivityExploration_第六关Step_3_Right": {
         "recognition": "OCR",
         "expected": [
-            "01"
+            "行动"
         ],
-        "replace": [["O", "0"], ["I", "1"], ["l", "1"]],
         "roi": [
-            640,
-            80,
-            390,
-            520
+            1052,
+            11,
+            130,
+            64
         ],
         "pre_delay": 1500,
         "action": "Click",
