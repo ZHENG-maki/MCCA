@@ -292,7 +292,33 @@
         "post_delay": 3000,
         "timeout": 40000,
         "next": [
-            "ActivityExploration_Combating1"
+            "ActivityExploration_Combating1",
+            "ActivityExploration_第六关Attack_1"
+        ]
+    },
+    "ActivityExploration_第六关Attack_1": {
+        "recognition": "OCR",
+        "expected": [
+            "行动"
+        ],
+        "roi": [
+            1052,
+            11,
+            130,
+            64
+        ],
+        "action": "Click",
+        "target": [
+            480,
+            260,
+            50,
+            55
+        ],
+        "post_delay": 3000,
+        "timeout": 40000,
+        "next": [
+            "ActivityExploration_Combating1",
+            "ActivityExploration_第六关Attack_1"
         ]
     },
     "ActivityExploration_第六关Step_2": {
