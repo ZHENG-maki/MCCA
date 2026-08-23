@@ -391,7 +391,6 @@
         ]
     },
     "ActivityExploration_周本获得物品": {
-        "is_sub": true,
         "recognition": "OCR",
         "expected": [
             "获得物品"
